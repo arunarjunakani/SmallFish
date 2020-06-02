@@ -1,0 +1,24 @@
+{
+  "name": "smallfish",
+  "version": "1.0.0",
+  "description": "Basic chess AI",
+  "main": "index.js",
+  "dependencies": {
+    "chess.js": "^0.10.3",
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arunarjunakani/SmallFish.git"
+  },
+  "author": "Arun Arjunakani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arunarjunakani/SmallFish/issues"
+  },
+  "homepage": "https://github.com/arunarjunakani/SmallFish#readme"
+}
