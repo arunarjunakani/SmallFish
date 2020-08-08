@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "chess.js": "^0.10.3",
+    "chessboardjs": "0.0.1",
     "prompt-sync": "^4.2.0"
   },
   "devDependencies": {},
