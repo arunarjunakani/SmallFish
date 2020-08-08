@@ -4,6 +4,7 @@
   "description": "Basic chess AI",
   "main": "index.js",
   "dependencies": {
+    "@chrisoakman/chessboardjs": "^1.0.0",
     "chess.js": "^0.10.3",
     "chessboardjs": "0.0.1",
     "prompt-sync": "^4.2.0"
