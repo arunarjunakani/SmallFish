@@ -32,15 +32,30 @@ function makeMove() {
     board.position(game.fen());
 }
 
+function opTurn() {
+	return game.turn() === 'w' ? 'b' : 'w'
+}
+
 function bestMove() {
 	const moves = game.moves({verbose: true})
-
 	const currVal = evaluateBoard()[game.turn()];
-	for (move of moves) {
-		console.log(move["to"])
-	}
+	const currOpVal = evaluateBoard()[opTurn()];
 
-    const bestMove = moves[Math.floor(Math.random() * moves.length)]
+	let bestDiff = -9999
+	let bestMove
+	for (let i = 0; i < moves.length; i++) {
+		let mv = moves[i]
+		game.move(mv)
+		const newVal = evaluateBoard()[game.turn()]
+
+		if (currOpVal - newVal > bestDiff) {
+			bestDiff = currOpVal - newVal
+			bestMove = mv
+		}
+
+		game.undo()
+	}	
+
     return bestMove;
 }
 
