@@ -38,41 +38,44 @@ function opTurn() {
 
 function bestMove() {
 	const moves = game.moves({verbose: true})
-	const currVal = evaluateBoard()[game.turn()];
-	const currOpVal = evaluateBoard()[opTurn()];
-
-	let bestDiff = -9999
+	
 	let bestMove
+	let currVal = evaluateBoard()
+	
+	let diff = -9999
+
 	for (let i = 0; i < moves.length; i++) {
 		let mv = moves[i]
 		game.move(mv)
-		const newVal = evaluateBoard()[game.turn()]
+		
+		let newVal = evaluateBoard()
+		game.undo()
 
-		if (currOpVal - newVal > bestDiff) {
-			bestDiff = currOpVal - newVal
+		if (game.turn() === 'w' && newVal - currVal > diff) {
+			diff = newVal - currVal
 			bestMove = mv
 		}
 
-		game.undo()
+		if (game.turn() === 'b' && currVal - newVal > diff) {
+			diff = currVal - newVal
+			bestMove = mv
+		}
 	}	
-
+    
     return bestMove;
 }
 
 function evaluateBoard() {
-	let result = {
-		"w": 0,
-		"b": 0
-	}
+	let result = 0
 	for (i in game.board()) {
 		for (j in game.board()) {
 			let piece = game.board()[i][j]
 			if (piece) {
-				result[piece.color] += getWeight(piece)
+				result += piece.color === 'w' ? getWeight(piece) : -getWeight(piece)
 			}
 		}
 	}
-	return result
+	return result;
 }
 
 function getWeight(piece) {
@@ -88,7 +91,7 @@ function getWeight(piece) {
 		case "q":
 			return 90
 		case "k":
-			return 0
+			return 900
 	}
 }
 
