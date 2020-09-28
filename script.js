@@ -100,10 +100,7 @@ function evaluateBoard() {
 	let result = 0
 	for (i in game.board()) {
 		for (j in game.board()) {
-			let piece = game.board()[i][j]
-			if (piece) {
-				result += piece.color === 'w' ? getWeight(piece) : -getWeight(piece)
-			}
+			result += getWeight(game.board()[i][j])
 		}
 	}
 	return result;
@@ -111,18 +108,20 @@ function evaluateBoard() {
 
 function getWeight(piece) {
 	if (!piece) return 0
+	
+	let color = piece.color === 'w' ? 1 : -1;
 	switch (piece.type) {
 		case "p":
-			return 10
+			return 10 * color
 		case "n":
 		case "b":
-			return 30
+			return 30 * color
 		case "r":
-			return 50
+			return 50 * color
 		case "q":
-			return 90
+			return 90 * color
 		case "k":
-			return 900
+			return 900 * color
 	}
 }
 
