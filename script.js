@@ -37,32 +37,53 @@ function opTurn() {
 }
 
 function bestMove() {
-	const moves = game.moves({verbose: true})
-	
+	// const moves = game.moves({verbose: true})
+	let bestMove = minimaxRoot(3, true)
+    return bestMove;
+}
+
+function minimaxRoot(depth, isMaximizing) {
+	let moves = game.moves();
+	let maxChange = -9999
 	let bestMove
-	let currVal = evaluateBoard()
-	
-	let diff = -9999
 
 	for (let i = 0; i < moves.length; i++) {
-		let mv = moves[i]
-		game.move(mv)
-		
-		let newVal = evaluateBoard()
+		let newMove = moves[i] 
+		game.move(newMove)
+		let val = minimax(depth - 1, !isMaximizing)
 		game.undo()
+		if (val >= maxChange) {
+			maxChange = val
+			bestMove = newMove
+		}	
+	}
 
-		if (game.turn() === 'w' && newVal - currVal > diff) {
-			diff = newVal - currVal
-			bestMove = mv
-		}
+	return bestMove;
+}
 
-		if (game.turn() === 'b' && currVal - newVal > diff) {
-			diff = currVal - newVal
-			bestMove = mv
+function minimax(depth, isMaximizing) {
+	if (depth === 0) {
+		return -evaluateBoard()
+	}
+
+	let moves = game.moves()
+	if (isMaximizing) {
+		let maxChange = -9999
+		for (let i = 0; i < moves.length; i++) {
+			game.move(moves[i])
+			maxChange = Math.max(maxChange, minimax(depth - 1, !isMaximizing))
+			game.undo()
 		}
-	}	
-    
-    return bestMove;
+		return maxChange
+	} else {
+		let maxChange = 9999
+		for (let i = 0; i < moves.length; i++) {
+			game.move(moves[i])
+			maxChange = Math.min(maxChange, minimax(depth - 1, !isMaximizing))
+			game.undo()
+		}
+		return maxChange
+	}
 }
 
 function evaluateBoard() {
