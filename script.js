@@ -50,7 +50,7 @@ function minimaxRoot(depth, isMaximizing) {
 	for (let i = 0; i < moves.length; i++) {
 		let newMove = moves[i] 
 		game.move(newMove)
-		let val = minimax(depth - 1, !isMaximizing)
+		let val = minimax(depth - 1, -10000, 10000, !isMaximizing)
 		game.undo()
 		if (val >= maxChange) {
 			maxChange = val
@@ -61,7 +61,7 @@ function minimaxRoot(depth, isMaximizing) {
 	return bestMove;
 }
 
-function minimax(depth, isMaximizing) {
+function minimax(depth, alpha, beta, isMaximizing) {
 	if (depth === 0) {
 		return -evaluateBoard()
 	}
@@ -71,16 +71,26 @@ function minimax(depth, isMaximizing) {
 		let maxChange = -9999
 		for (let i = 0; i < moves.length; i++) {
 			game.move(moves[i])
-			maxChange = Math.max(maxChange, minimax(depth - 1, !isMaximizing))
+			maxChange = Math.max(maxChange, minimax(depth - 1, alpha, beta, !isMaximizing))
 			game.undo()
+		
+			alpha = Math.max(alpha, maxChange)
+			if (beta <= alpha) {
+				return maxChange
+			}
 		}
 		return maxChange
 	} else {
 		let maxChange = 9999
 		for (let i = 0; i < moves.length; i++) {
 			game.move(moves[i])
-			maxChange = Math.min(maxChange, minimax(depth - 1, !isMaximizing))
+			maxChange = Math.min(maxChange, minimax(depth - 1, alpha, beta, !isMaximizing))
 			game.undo()
+
+			beta = Math.min(beta, maxChange)
+			if (beta <= alpha) {
+				return maxChange
+			}
 		}
 		return maxChange
 	}
